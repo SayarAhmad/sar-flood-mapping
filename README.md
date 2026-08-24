@@ -91,8 +91,19 @@ Cloud.
 | Mapped flooded area | 6,301.6 ha |
 | Of which cropland | 4,922.6 ha (78%) |
 | Of which built-up | 0.2 ha |
-| Reported flooded area | *(pending — need a published figure to compare against)* |
-| Agreement | *(pending)* |
+| Reported flooded area | 52,063 ha — Kuttanad region, peak, 18 Aug 2018 ([Ozturk et al., 2018](https://www.tandfonline.com/doi/full/10.1080/19475705.2018.1543212)) |
+| Agreement | ~12% |
+
+That's a big gap, and I don't think it means the method is wrong — it means
+my AOI and the reported figure aren't measuring the same thing. Two likely
+causes: my rectangle is a boundary I picked by eye, not the actual Kuttanad
+administrative/hydrological boundary the paper uses (which is probably
+larger and better-defined), and my after-flood window (15–25 Aug) may not
+have caught a Sentinel-1 pass on the actual peak day (18 Aug) — a few days
+either side of peak, floodwater recedes fast in this terrain. I'd want to
+narrow the after-window to dates closer to the 18th and compare the AOI
+against an actual Kuttanad boundary shapefile before trusting this number
+much further.
 
 ## Limitations
 
