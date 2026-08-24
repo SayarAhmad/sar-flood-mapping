@@ -11,6 +11,8 @@ Otsu + exposure, fill in validation, and drop exports into `exports/`.
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-app-ff4b4b)](https://streamlit.io/)
 
+**Live app:** *(not deployed yet — will be added here, e.g. `https://sar-flood-mapping.streamlit.app`)*
+
 ## Live dashboard
 
 ```
