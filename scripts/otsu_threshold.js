@@ -1,18 +1,17 @@
 /*
-  Day 3 addon: Otsu's method for automatic threshold selection.
-  Standard GEE community implementation (Gorelick et al.), adapted for the
-  after/before VH ratio image produced in flood_mapping.js.
+  Otsu's method for automatic threshold selection, applied to the
+  after/before VH ratio image from flood_mapping.js. GEE implementation
+  based on the standard approach (Gorelick et al.).
 
   Otsu picks the threshold that maximises the between-class variance of the
-  histogram, i.e. it finds the split point that best separates two populations
-  (here: "changed"/flooded pixels vs "unchanged" pixels) without you guessing
-  a fixed number like 1.25.
+  histogram — the split point that best separates flooded from unchanged
+  pixels, rather than relying on a fixed guess like 1.25.
 
-  Usage: after computing `difference` in flood_mapping.js, run:
+  Usage, after computing `difference` in flood_mapping.js:
     var otsu_threshold = computeOtsuThreshold(difference, geometry);
     print('Otsu threshold:', otsu_threshold);
     var flooded_otsu = difference.gt(otsu_threshold).rename('water').selfMask();
-  Then compare flooded_otsu's area against the fixed-threshold (1.25) result.
+  Compare flooded_otsu's area against the fixed-threshold result.
 */
 
 function otsu(histogram) {

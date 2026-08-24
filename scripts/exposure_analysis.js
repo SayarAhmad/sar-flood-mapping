@@ -1,10 +1,7 @@
 /*
-  Day 3 addon: exposure assessment.
-  Intersects the flood extent (from flood_mapping.js: `flooded_clean`) with
-  land cover and population to answer "what actually got affected".
-
-  Run this after flood_mapping.js in the same GEE script (or import its
-  output as an asset).
+  Exposure assessment: intersects the flood extent from flood_mapping.js
+  (`flooded_clean`) with land cover and population to quantify what was
+  actually affected. Run this after flood_mapping.js in the same script.
 */
 
 // ---------- LAND COVER EXPOSURE (ESA WorldCover, 10m, 2021) ----------
@@ -29,7 +26,7 @@ print('Flooded built-up (hectares):', ee.Number(builtupArea.get('water')).divide
 // ---------- POPULATION EXPOSURE (WorldPop, 100m, most recent available) ----------
 var worldpop = ee.ImageCollection('WorldPop/GP/100m/pop')
   .filterBounds(geometry)
-  .filterDate('2020-01-01', '2021-01-01') // adjust to nearest year to your event
+  .filterDate('2020-01-01', '2021-01-01') // nearest available year to the event
   .mosaic()
   .clip(geometry);
 
@@ -48,7 +45,6 @@ var popExposed = floodedPop.reduceRegion({
 print('Estimated people exposed to flooding:', popExposed);
 
 // ---------- VALIDATION ----------
-// Compare `flood_stats` (total flooded hectares from flood_mapping.js) against a
-// published figure for your event (state disaster report / Copernicus EMS product).
-// Record the comparison in your README, e.g.:
-//   Mapped: 42,300 ha   Reported (Kerala SDMA): 45,000 ha   Agreement: 94%
+// Compare `flood_stats` (total flooded hectares from flood_mapping.js) against
+// a published figure for the event — state disaster management authority
+// report or a Copernicus EMS rapid mapping product.

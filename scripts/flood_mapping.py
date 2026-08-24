@@ -1,11 +1,11 @@
 """
-Sentinel-1 SAR flood mapping — Python port of scripts/flood_mapping.js
-using the earthengine-api. Produces the same flood extent, exports GeoTIFFs
-locally via geemap, and writes the exposure table as CSV.
+Python port of flood_mapping.js (earthengine-api). Runs the same
+change-detection pipeline, exports GeoTIFFs locally via geemap, and writes
+the exposure table to CSV.
 
 Setup:
-    pip install earthengine-api geemap pandas
-    earthengine authenticate   # one-time browser auth, same GEE account as the JS editor
+    pip install -r ../requirements.txt
+    earthengine authenticate   # one-time browser auth, same GEE account as the Code Editor
 
 Run:
     python flood_mapping.py
@@ -15,10 +15,14 @@ import ee
 import geemap
 import pandas as pd
 
-ee.Initialize()
+ee.Initialize(project="sentinel-1-sar-flood-mapping")
 
-# ---------- 1. STUDY AREA & DATES (EDIT THESE) ----------
-GEOMETRY = ee.Geometry.Rectangle([76.0, 9.5, 77.5, 10.5])  # placeholder: Kerala backwaters
+# ---------- 1. STUDY AREA & DATES ----------
+# Kuttanad, Alappuzha district — the low-lying "rice bowl" of Kerala (parts sit
+# below sea level), among the worst-hit areas in the August 2018 floods.
+# Must match scripts/flood_mapping.js so the GeoJSON export and this CSV
+# describe the same area.
+GEOMETRY = ee.Geometry.Rectangle([76.25, 9.25, 76.65, 9.75])
 BEFORE_START, BEFORE_END = "2018-07-01", "2018-07-31"
 AFTER_START, AFTER_END = "2018-08-15", "2018-08-25"
 DIFF_THRESHOLD = 1.25
@@ -94,15 +98,24 @@ def export_geotiff(image, filename, geometry=GEOMETRY, scale=10):
 
 
 if __name__ == "__main__":
+    print("Computing flood mask (Sentinel-1 load, speckle filter, threshold, masks)...", flush=True)
     flooded_clean, before_f, after_f, difference = compute_flood_extent()
+    print("Flood mask computed.", flush=True)
 
+    print("Requesting flooded area from Earth Engine (reduceRegion)...", flush=True)
     total_ha = area_hectares(flooded_clean)
-    print(f"Total flooded area: {total_ha:,.1f} hectares")
+    print(f"Total flooded area: {total_ha:,.1f} hectares", flush=True)
 
+    print("Computing exposure table (WorldCover intersection)...", flush=True)
     table = exposure_table(flooded_clean)
     table.to_csv("../exports/exposure_table.csv", index=False)
-    print(table)
+    print(table, flush=True)
 
+    print("Exporting GeoTIFFs (this hits the network, can take a while)...", flush=True)
     export_geotiff(flooded_clean, "../exports/flood_extent.tif")
+    print("  flood_extent.tif done", flush=True)
     export_geotiff(before_f, "../exports/before_vh.tif")
+    print("  before_vh.tif done", flush=True)
     export_geotiff(after_f, "../exports/after_vh.tif")
+    print("  after_vh.tif done", flush=True)
+    print("All done.", flush=True)

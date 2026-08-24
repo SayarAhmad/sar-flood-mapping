@@ -1,16 +1,13 @@
 /*
-  Sentinel-1 SAR flood mapping — Google Earth Engine JavaScript
-  Method: UN-SPIDER Recommended Practice (change detection on VH backscatter)
+  Sentinel-1 SAR flood mapping, Kerala floods (August 2018).
+  Change-detection method based on the UN-SPIDER recommended practice:
   https://un-spider.org/advisory-support/recommended-practices/recommended-practice-google-earth-engine-flood-mapping
-
-  DAY 1 GOAL: run this on the UN-SPIDER example AOI/dates unmodified, get a flood polygon.
-  DAY 2 GOAL: swap geometry + dates for a real Indian event (Kerala Aug 2018 / Assam Jun 2022 / Kosi Bihar).
-  DAY 3 GOAL: replace the fixed 1.25 threshold with Otsu, add WorldCover/WorldPop exposure, validate.
 */
 
-// ---------- 1. STUDY AREA & DATES (EDIT THESE) ----------
-// Placeholder AOI - replace with your event's geometry (draw on map or import a shapefile asset)
-var geometry = ee.Geometry.Rectangle([76.0, 9.5, 77.5, 10.5]); // example: Kerala backwaters region
+// ---------- 1. STUDY AREA & DATES ----------
+// Kuttanad, Alappuzha district — the low-lying "rice bowl" of Kerala (parts sit
+// below sea level), among the worst-hit areas in the August 2018 floods.
+var geometry = ee.Geometry.Rectangle([76.25, 9.25, 76.65, 9.75]);
 
 var before_start = '2018-07-01';
 var before_end   = '2018-07-31';   // dry-season reference window, same year
@@ -34,7 +31,7 @@ var before = beforeCollection.mosaic().clip(geometry);
 var after  = afterCollection.mosaic().clip(geometry);
 
 // ---------- 3. SPECKLE FILTERING ----------
-// Simple smoothing (focal median). Swap for a Refined Lee filter once you understand why.
+// Focal median smoothing — a simpler stand-in for a proper Refined Lee filter.
 var smoothing_radius = 50; // meters
 var before_filtered = before.focal_median(smoothing_radius, 'circle', 'meters');
 var after_filtered  = after.focal_median(smoothing_radius, 'circle', 'meters');
@@ -42,7 +39,7 @@ var after_filtered  = after.focal_median(smoothing_radius, 'circle', 'meters');
 // ---------- 4. CHANGE DETECTION ----------
 var difference = after_filtered.divide(before_filtered);
 
-// Fixed threshold (UN-SPIDER default). Day 3: replace with Otsu (see otsu_threshold.js).
+// Fixed threshold (UN-SPIDER default) — otsu_threshold.js computes an alternative.
 var diff_threshold = 1.25;
 var flooded = difference.gt(diff_threshold).rename('water').selfMask();
 
