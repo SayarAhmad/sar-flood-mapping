@@ -5,11 +5,11 @@
   "after_window": "2018-08-15 to 2018-08-25",
   "fixed_threshold": 1.25,
   "otsu_threshold": null,
-  "mapped_flooded_ha": null,
+  "mapped_flooded_ha": 6301.61,
   "reported_flooded_ha": null,
   "reported_source": "",
   "agreement_pct": null,
-  "flooded_cropland_ha": null,
-  "flooded_builtup_ha": null,
+  "flooded_cropland_ha": 4922.59,
+  "flooded_builtup_ha": 0.23,
   "estimated_population_exposed": null
 }

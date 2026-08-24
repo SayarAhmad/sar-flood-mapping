@@ -88,8 +88,10 @@ Cloud.
 | | Value |
 |---|---|
 | Event | Kerala floods, August 2018 (Kuttanad, Alappuzha) |
-| Mapped flooded area | *(pending)* ha |
-| Reported flooded area | *(pending)* |
+| Mapped flooded area | 6,301.6 ha |
+| Of which cropland | 4,922.6 ha (78%) |
+| Of which built-up | 0.2 ha |
+| Reported flooded area | *(pending — need a published figure to compare against)* |
 | Agreement | *(pending)* |
 
 ## Limitations
