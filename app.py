@@ -51,10 +51,10 @@ def load_exposure_table():
     return None
 
 
-def metric_or_dash(value, suffix=""):
+def metric_or_dash(value, suffix="", decimals=1):
     if value is None:
         return "—"
-    return f"{value:,.1f}{suffix}" if isinstance(value, (int, float)) else str(value)
+    return f"{value:,.{decimals}f}{suffix}" if isinstance(value, (int, float)) else str(value)
 
 
 results = load_results()
@@ -90,8 +90,8 @@ with tab_map:
 
     col1, col2, col3 = st.columns(3)
     col1.metric("Mapped flooded area", metric_or_dash(results.get("mapped_flooded_ha"), " ha"))
-    col2.metric("Fixed threshold used", metric_or_dash(results.get("fixed_threshold")))
-    col3.metric("Otsu threshold", metric_or_dash(results.get("otsu_threshold")))
+    col2.metric("Fixed threshold used", metric_or_dash(results.get("fixed_threshold"), decimals=2))
+    col3.metric("Otsu threshold", metric_or_dash(results.get("otsu_threshold"), decimals=2))
 
 with tab_exposure:
     st.subheader("What got affected")
@@ -108,7 +108,7 @@ with tab_exposure:
 
     st.metric(
         "Estimated population exposed",
-        metric_or_dash(results.get("estimated_population_exposed")),
+        metric_or_dash(results.get("estimated_population_exposed"), decimals=0),
     )
 
 with tab_validation:
