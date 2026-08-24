@@ -4,12 +4,12 @@
   "before_window": "2018-07-01 to 2018-07-31",
   "after_window": "2018-08-15 to 2018-08-25",
   "fixed_threshold": 1.25,
-  "otsu_threshold": null,
-  "mapped_flooded_ha": 6301.61,
+  "otsu_threshold": 1.0132,
+  "mapped_flooded_ha": 6276.12,
   "reported_flooded_ha": 52063,
   "reported_source": "Satellite-based assessment of the August 2018 flood in parts of Kerala, India (Geomatics, Natural Hazards and Risk, 2018) - 520.63 sq km flooded in the Kuttanad region at peak, 18 Aug 2018",
   "agreement_pct": 12.1,
   "flooded_cropland_ha": 4922.59,
   "flooded_builtup_ha": 0.23,
-  "estimated_population_exposed": null
+  "estimated_population_exposed": 29956
 }

@@ -88,11 +88,17 @@ Cloud.
 | | Value |
 |---|---|
 | Event | Kerala floods, August 2018 (Kuttanad, Alappuzha) |
-| Mapped flooded area | 6,301.6 ha |
+| Mapped flooded area | 6,276.1 ha |
 | Of which cropland | 4,922.6 ha (78%) |
 | Of which built-up | 0.2 ha |
+| Estimated population exposed | ~29,956 |
+| Fixed threshold (1.25) vs Otsu | Otsu came out at 1.01 — meaningfully lower than the UN-SPIDER default |
 | Reported flooded area | 52,063 ha — Kuttanad region, peak, 18 Aug 2018 ([Ozturk et al., 2018](https://www.tandfonline.com/doi/full/10.1080/19475705.2018.1543212)) |
 | Agreement | ~12% |
+
+I also cross-checked the mapped area two ways — summing the raster mask directly (6,276.1 ha) versus computing area from the exported flood polygons (6,301.6 ha) — and they agree to within 0.4%, which at least confirms the pipeline itself is internally consistent even if the absolute number is off from the published figure.
+
+The Otsu threshold (1.01) being lower than the fixed 1.25 means it classifies more pixels as flooded, which moves the mapped area up, toward the published figure rather than away from it — I haven't yet re-run the area calculation with the Otsu threshold to see by how much, which is the obvious next step.
 
 That's a big gap, and I don't think it means the method is wrong — it means
 my AOI and the reported figure aren't measuring the same thing. Two likely

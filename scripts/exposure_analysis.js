@@ -30,11 +30,11 @@ var worldpop = ee.ImageCollection('WorldPop/GP/100m/pop')
   .mosaic()
   .clip(geometry);
 
-// Resample flood mask to population resolution before multiplying to avoid double counting.
-var floodedPop = flooded_clean.select('water')
-  .reduceResolution({reducer: ee.Reducer.max(), maxPixels: 1024})
-  .reproject({crs: worldpop.projection()})
-  .multiply(worldpop);
+// Mask WorldPop with the flood extent directly and sum at WorldPop's native
+// 100m scale. Earth Engine resamples the two inputs to a common grid during
+// reduceRegion, which is far cheaper than an explicit reduceResolution/
+// reproject chain (that approach hit the interactive memory limit on this AOI).
+var floodedPop = worldpop.updateMask(flooded_clean.select('water'));
 
 var popExposed = floodedPop.reduceRegion({
   reducer: ee.Reducer.sum(),
