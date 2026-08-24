@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+.DS_Store
+
+# Large raw exports - keep the small GeoJSON/CSV, drop big GeoTIFFs from git
+exports/*.tif
+!exports/.gitkeep
